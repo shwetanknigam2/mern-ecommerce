@@ -24,7 +24,8 @@ const PORT=process.env.PORT||5001
 
 app.use(
     cors({
-        origin: 'https://mern-ecommerce-1-j6ok.onrender.com',
+        // origin: 'https://mern-ecommerce-1-j6ok.onrender.com',
+        origin: '*',
         methods:['GET','POST','DELETE','PUT'],
         allowedHeaders:[
             "Content-Type",
