@@ -74,13 +74,12 @@ const authslice=createSlice({
     name:'auth',
     initialState,
     reducers:{
-        setUser:(state,action)=>{
-          resetToken:(state)=>{
+        setUser:(state,action)=>{},
+        resetToken:(state)=>{
             state.isAuthenticated=false,
             state.user=null,
             state.token=null
           }
-        }
     },
     extraReducers:(builder)=>{
         builder.addCase(registerUser.pending,(state)=>{
