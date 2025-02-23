@@ -20,8 +20,8 @@ const createorder = async (req, res) => {
             intent: 'sale',
             payer: { payment_method: 'paypal' },
             redirect_urls: {
-                return_url: `${process.env.CLIENT_URL}/shopping/paypal-return`,
-                cancel_url: `${process.env.CLIENT_URL}/shopping/paypal-cancel`
+                return_url: 'https://mern-ecommerce-1-j6ok.onrender.com/shopping/paypal-return',
+                cancel_url: 'https://mern-ecommerce-1-j6ok.onrender.com/shopping/paypal-cancel'
             },
             transactions: [
                 {
