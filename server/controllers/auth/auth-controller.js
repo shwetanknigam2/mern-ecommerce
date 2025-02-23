@@ -48,16 +48,29 @@ const loginUser=async(req,res)=>{
         }
 
         const token=jwt.sign({id:checkUser._id, username:checkUser.username,email:checkUser.email,role:checkUser.role},'shwewryyr',{expiresIn:'1h'})
-        res.cookie('token',token,{httpOnly:true,secure:true}).json(
-            {message:'User logged in successfully',
+        // res.cookie('token',token,{httpOnly:true,secure:true}).json(
+        //     {message:'User logged in successfully',
+        //     success:true,
+        //     user:{
+        //         username:checkUser.username,
+        //         email:checkUser.email,
+        //         role:checkUser.role,
+        //         id:checkUser._id
+        //     }
+        //     })
+
+        res.status(200).json({
             success:true,
+            message:'Logged in successfully',
+            token,
             user:{
-                username:checkUser.username,
-                email:checkUser.email,
-                role:checkUser.role,
-                id:checkUser._id
-            }
-            })
+                        username:checkUser.username,
+                        email:checkUser.email,
+                        role:checkUser.role,
+                        id:checkUser._id
+                    }
+                    
+        })
 
     }catch(err){
             return res.status(500).json({message:'Internal server error'})
@@ -69,7 +82,11 @@ const logoutUser=(req,res)=>{
 }
 
 const authmiddleware=(req,res,next)=>{
-    const token=req.cookies.token
+
+    const authHeader=req.headers['authorization']
+
+    const token= authHeader && authHeader.split(' ')[1]
+
     if(!token){
         return res.status(401).json({message:'Unauthorized',success:false})
     }

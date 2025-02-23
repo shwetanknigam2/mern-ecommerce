@@ -9,7 +9,8 @@ import axios from "axios";
 const initialState={
     isAuthenticated:false,
     isLoading:true,
-    user:null
+    user:null,
+    token:null
 }
 
 export const logoutUser = createAsyncThunk('/auth/logout', async () => {
@@ -51,10 +52,11 @@ export const loginUser = createAsyncThunk('/auth/login', async (formData, { reje
 });
 
 export const checkAuth= createAsyncThunk('/auth/checkauth', 
-    async ()=>{
+    async (token)=>{
         const response=await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/checkauth`,{
             withCredentials:true,
             headers:{
+                Authorization:`Bearer ${token}`,
                 'Cache-Control':'no-cache, no-store, must-revalidate proxy-revalidate',
                 Expires:0
 
@@ -73,7 +75,11 @@ const authslice=createSlice({
     initialState,
     reducers:{
         setUser:(state,action)=>{
-
+          resetToken:(state)=>{
+            state.isAuthenticated=false,
+            state.user=null,
+            state.token=null
+          }
         }
     },
     extraReducers:(builder)=>{
@@ -97,11 +103,14 @@ const authslice=createSlice({
             state.isLoading=false
             state.isAuthenticated=!action.payload.success?false:true
             state.user=!action.payload.success? null:action.payload.user
+            state.token=action.payload.token
+            sessionStorage.setItem('token',JSON.stringify(action.payload.token))
         })
-        builder.addCase(loginUser.rejected,(state,action)=>{
+        builder.addCase(loginUser.rejected,(state)=>{
             state.isLoading=false
             state.isAuthenticated=false
             state.user=null
+            state.token=null
         })
         builder.addCase(checkAuth.pending,(state)=>{
             state.isLoading=true
@@ -124,5 +133,5 @@ const authslice=createSlice({
     }
 })
 
-export const {setUser}=authslice.actions
+export const {setUser,resetToken}=authslice.actions
 export default authslice.reducer

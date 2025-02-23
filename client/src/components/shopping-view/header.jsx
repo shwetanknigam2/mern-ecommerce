@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { shoppingviewheaderitems } from '@/config';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel } from '../ui/dropdown-menu';
 import { AvatarFallback, Avatar } from '../ui/avatar';
-import { logoutUser } from '@/store/auth-slice';
+import { logoutUser, resetToken } from '@/store/auth-slice';
 import UserCartWrapper from './cart-wrapper';
 import { fetchcartitems } from '@/store/shopping/cart-slice';
 import { Label } from '@radix-ui/react-label';
@@ -67,7 +67,11 @@ function HeaderRightContent() {
   }, [dispatch, user?.id]);
 
   function handlelogout() {
-    dispatch(logoutUser());
+    // dispatch(logoutUser());
+     dispatch(resetToken())
+         sessionStorage.clear()
+         navigate('/auth/login')
+
   }
 
   const cartsize=items?.items?.length||0
