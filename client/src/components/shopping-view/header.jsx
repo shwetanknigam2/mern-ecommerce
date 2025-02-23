@@ -67,10 +67,10 @@ function HeaderRightContent() {
   }, [dispatch, user?.id]);
 
   function handlelogout() {
-    // dispatch(logoutUser());
-     dispatch(resetToken())
-         sessionStorage.clear()
-         navigate('/auth/login')
+    dispatch(logoutUser());
+    //  dispatch(resetToken())
+    //      sessionStorage.clear()
+    //      navigate('/auth/login')
 
   }
 
